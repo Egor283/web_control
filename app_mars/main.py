@@ -128,6 +128,23 @@ def job_edit(id):
             abort(404)
     return render_template('addjob.html', title='Job Edit', form=form)
 
+@app.route('/add_job', methods=['GET', 'POST'])
+@login_required
+def add_job():
+    form = AddJobForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        jobs = Jobs(
+            job = form.job.data,
+            team_leader = form.team_leader.data,
+            work_size = form.work_size.data,
+            collaborators = form.collaborators.data,
+            is_finished = form.is_finished.data,
+        )
+        db_sess.commit()
+        return redirect('/')
+    return render_template('addjob.html', title='Add job', form=form)
+
 @app.route('/job_delete/<id>', methods=['GET', 'POST'])
 @login_required
 def job_delete(id):
