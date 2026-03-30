@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .registration-card {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(139, 0, 0, 0.2);
+        border: 1px solid rgba(139, 0, 0, 0.1);
+    }
+    
+    .registration-title {
+        color: #8B0000;
+        font-size: 2.5em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 3px solid #8B0000;
+        position: relative;
+    }
+    
+    .registration-title::before {
+        content: "👨‍🚀";
+        position: absolute;
+        left: 20px;
+        top: 0;
+        font-size: 1.5em;
+    }
+    
+    .registration-title::after {
+        content: "👩‍🚀";
+        position: absolute;
+        right: 20px;
+        top: 0;
+        font-size: 1.5em;
+    }
+    
+    .form-label {
+        color: #8B0000;
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 1.1em;
+    }
+    
+    .form-control {
+        border: 2px solid #ffe4e1;
+        border-radius: 10px;
+        padding: 12px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-control:focus {
+        border-color: #8B0000;
+        box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+        transform: translateY(-2px);
+    }
+    
+    .form-control:hover {
+        border-color: #B22222;
+        background: white;
+    }
+    
+    .btn-register {
+        background: linear-gradient(135deg, #8B0000, #B22222);
+        border: none;
+        color: white;
+        padding: 15px 50px;
+        font-size: 1.2em;
+        font-weight: bold;
+        border-radius: 50px;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-register:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(139, 0, 0, 0.4);
+        background: linear-gradient(135deg, #B22222, #8B0000);
+    }
+    
+    .btn-register:active {
+        transform: translateY(0);
+    }
+    
+    .btn-register::before {
+        content: "🚀";
+        position: absolute;
+        left: -30px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: left 0.3s ease;
+    }
+    
+    .btn-register:hover::before {
+        left: 20px;
+    }
+    
+    .alert-danger {
+        background: #ffe4e1;
+        border: none;
+        border-left: 4px solid #8B0000;
+        color: #8B0000;
+        border-radius: 10px;
+        margin-top: 5px;
+        padding: 10px 15px;
+        animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .mars-badge {
+        background: linear-gradient(135deg, #8B0000, #B22222);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+    
+    .form-group:hover .form-label {
+        transform: translateX(5px);
+        transition: transform 0.3s ease;
+    }
+    
+    .required-field::after {
+        content: " *";
+        color: #8B0000;
+        font-size: 1.2em;
+    }
+    
+    .field-icon {
+        position: absolute;
+        right: 15px;
+        top: 45px;
+        color: #8B0000;
+        opacity: 0.5;
+    }
+</style>
+
+<div class="registration-card">
+    <div class="text-center mb-4">
+        <span class="mars-badge">🔴 INTERNATIONAL SPACE REGISTRATION 🔴</span>
+    </div>
+    
+    <h1 class="registration-title">REGISTRATION</h1>
+    
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.surname.label(class="form-label required-field") }}<br>
+                    {{ form.surname(class="form-control", placeholder="Enter your surname") }}
+                    <span class="field-icon">👤</span>
+                    {% for error in form.surname.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.name.label(class="form-label required-field") }}<br>
+                    {{ form.name(class="form-control", placeholder="Enter your name") }}
+                    <span class="field-icon">👤</span>
+                    {% for error in form.name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.email.label(class="form-label required-field") }}<br>
+                    {{ form.email(class="form-control", type="email", placeholder="example@mars.com") }}
+                    <span class="field-icon">📧</span>
+                    {% for error in form.email.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.age.label(class="form-label required-field") }}<br>
+                    {{ form.age(class="form-control", type="number", placeholder="Your age") }}
+                    <span class="field-icon">🎂</span>
+                    {% for error in form.age.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.password.label(class="form-label required-field") }}<br>
+                    {{ form.password(class="form-control", type="password", placeholder="Minimum 8 characters") }}
+                    <span class="field-icon">🔒</span>
+                    {% for error in form.password.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.password_again.label(class="form-label required-field") }}<br>
+                    {{ form.password_again(class="form-control", type="password", placeholder="Confirm your password") }}
+                    <span class="field-icon">🔒</span>
+                    {% for error in form.password_again.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.position.label(class="form-label") }}<br>
+                    {{ form.position(class="form-control", placeholder="Your position on Mars") }}
+                    <span class="field-icon">🚀</span>
+                    {% for error in form.position.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.speciality.label(class="form-label") }}<br>
+                    {{ form.speciality(class="form-control", placeholder="Your specialization") }}
+                    <span class="field-icon">🔬</span>
+                    {% for error in form.speciality.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="form-group">
+                    {{ form.address.label(class="form-label") }}<br>
+                    {{ form.address(class="form-control", placeholder="Your module on station") }}
+                    <span class="field-icon">📍</span>
+                    {% for error in form.address.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted">
+                <small>Fields marked with <span style="color: #8B0000;">*</span> are required</small>
+            </p>
+            
+            {{ form.submit(class="btn-register", value="🚀 LAUNCH REGISTRATION") }}
+        </div>
+        
+        {% if message %}
+            <div class="alert alert-info mt-4" style="background: #ffe4e1; border-color: #8B0000; color: #8B0000;">
+                {{ message }}
+            </div>
+        {% endif %}
+    </form>
+    
+    <div class="text-center mt-4">
+        <p class="text-muted">
+            Already registered? <a href="/login" style="color: #8B0000; text-decoration: none;">Log in here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .login-card {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 40px rgba(139, 0, 0, 0.2);
+        border: 1px solid rgba(139, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .login-title {
+        color: #8B0000;
+        font-size: 2.5em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 3px solid #8B0000;
+        position: relative;
+    }
+    
+    .login-title::before {
+        content: "👨‍🚀";
+        position: left;
+        left: 20px;
+        top: 0;
+        font-size: 1em;
+    }
+    
+    .login-title::after {
+        content: "👩‍🚀";
+        position: right;
+        right: 20px;
+        top: 0;
+        font-size: 1em;
+    }
+    
+    .mars-badge {
+        background: linear-gradient(135deg, #8B0000, #B22222);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 1em;
+        display: inline-block;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    
+    .form-label {
+        color: #8B0000;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 1.1em;
+        display: block;
+    }
+    
+    .form-control {
+        border: 2px solid #ffe4e1;
+        border-radius: 12px;
+        padding: 14px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        width: 100%;
+        font-size: 1em;
+    }
+    
+    .form-control:focus {
+        border-color: #8B0000;
+        box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+        transform: translateY(-2px);
+        outline: none;
+    }
+    
+    .form-control:hover {
+        border-color: #B22222;
+        background: white;
+    }
+    
+    .btn-login {
+        background: linear-gradient(135deg, #8B0000, #B22222);
+        border: none;
+        color: white;
+        padding: 15px 50px;
+        font-size: 1.2em;
+        font-weight: bold;
+        border-radius: 50px;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    
+    .btn-login:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(139, 0, 0, 0.4);
+        background: linear-gradient(135deg, #B22222, #8B0000);
+    }
+    
+    .btn-login:active {
+        transform: translateY(0);
+    }
+    
+    .btn-login::before {
+        content: "🚀";
+        position: absolute;
+        left: -30px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: left 0.3s ease;
+    }
+    
+    .btn-login:hover::before {
+        left: 20px;
+    }
+    
+    .alert-danger {
+        background: #ffe4e1;
+        border: none;
+        border-left: 4px solid #8B0000;
+        color: #8B0000;
+        border-radius: 10px;
+        margin-top: 8px;
+        padding: 12px 15px;
+        animation: slideIn 0.3s ease;
+        font-size: 0.95em;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .remember-me {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .remember-me input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: #8B0000;
+    }
+    
+    .remember-me label {
+        color: #555;
+        font-size: 1em;
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    .message-alert {
+        background: #ffe4e1;
+        border: 1px solid #8B0000;
+        color: #8B0000;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+        text-align: center;
+        font-weight: 500;
+    }
+    
+    .register-link {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #ffe4e1;
+    }
+    
+    .register-link a {
+        color: #8B0000;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 5px 15px;
+        border-radius: 20px;
+    }
+    
+    .register-link a:hover {
+        background: #ffe4e1;
+        color: #B22222;
+    }
+    
+    .field-icon {
+        position: relative;
+    }
+    
+    .input-group {
+        position: relative;
+    }
+    
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #8B0000;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+</style>
+
+<div class="login-card">
+    <div class="text-center">
+        <span class="mars-badge">🔴 MISSION CONTROL ACCESS 🔴</span>
+    </div>
+    
+    <h2 class="login-title">AUTHORIZATION</h2>
+    
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label class="form-label">
+                <span>📧 {{ form.email.label.text }}</span>
+            </label>
+            <div class="input-group">
+                {{ form.email(class="form-control", type="email", placeholder="Enter your email") }}
+                <span class="input-icon">📧</span>
+            </div>
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">
+                <span>🔒 {{ form.password.label.text }}</span>
+            </label>
+            <div class="input-group">
+                {{ form.password(class="form-control", type="password", placeholder="Enter your password") }}
+                <span class="input-icon">🔒</span>
+            </div>
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="remember-me">
+            {{ form.remember_me() }}
+            {{ form.remember_me.label(class="form-check-label") }}
+        </div>
+        
+        {{ form.submit(type="submit", class="btn-login", value="🚀 ACCESS MISSION CONTROL") }}
+        
+        {% if message %}
+            <div class="message-alert" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+    </form>
+    
+    <div class="register-link">
+        <p class="text-muted">
+            New to the mission? 
+            <a href="/register">JOIN THE CREW 👨‍🚀</a>
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Дополнительные стили для анимации */
+    .login-card {
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+        animation: slideUp 0.5s ease;
+        animation-fill-mode: both;
+    }
+    
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}

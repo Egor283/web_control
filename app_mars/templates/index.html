@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<meta charset="utf-8">
+<h2 align='center' class="mb-4 text-danger" style="text-shadow: 2px 2px 4px rgba(255,0,0,0.2);">⚡ LOGS OF WORK PERFORMED ⚡</h2>
+
+{% for job in jobs %}
+<div class="card mb-4 border-danger shadow-sm">
+    <div class="card-header" style="background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); color: white; display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="mb-0"><i class="bi bi-record-circle"></i> Action # {{ job.id }}</h3>
+        
+        <!-- Кнопки управления (видимы только для авторизованных пользователей с правами) -->
+        {% if current_user.is_authenticated and (current_user.id == job.team_leader or current_user.id == 1) %}
+        <div>
+            <a href="/jobs/{{ job.id }}" class="btn btn-warning btn-sm" style="background-color: #FFD700; color: #8B0000; border: none; margin-right: 5px;">
+                ✏️ Edit
+            </a>
+            <a href="/job_delete/{{ job.id }}" class="btn btn-danger btn-sm" style="background-color: #8B0000; color: white; border: none;" 
+               onclick="return confirm('Are you sure you want to delete this job?');">
+                🗑️ Delete
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="card-body" style="background-color: #FFF5F5;">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background-color: #FFE4E1; color: #8B0000;">
+                    <tr>
+                        <th>📋 Name of Job</th>
+                        <th>👤 Leader name</th>
+                        <th>⏱️ Duration (hours)</th>
+                        <th>👥 Collaborators</th>
+                        <th>📊 Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color: #8B0000;">{{ job.job }}</strong></td>
+                        <td><span style="color: #CD5C5C;">{{ names[job.team_leader][0] }} {{ names[job.team_leader][1] }}</span></td>
+                        <td><span class="badge" style="background-color: #FFE4E1; color: #8B0000;">{{ job.work_size }}</span></td>
+                        <td><span style="color: #B22222;">{{ job.collaborators }}</span></td>
+                        <td>
+                            {% if job.is_finished %}
+                                <span class="badge" style="background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%); color: white; padding: 8px 12px;">
+                                    ✅ Completed
+                                </span>
+                            {% else %}
+                                <span class="badge" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8C8C 100%); color: white; padding: 8px 12px;">
+                                    ⏳ In progress
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="card-footer" style="background-color: #FFE4E1; border-top: 1px solid #DC143C; display: flex; justify-content: space-between; align-items: center;">
+        <small class="text-muted">🕐 Last updated: {{ job.modified_date if job.modified_date else 'just now' }}</small>
+        
+        <!-- Информация о том, кто может редактировать (опционально) -->
+        {% if current_user.is_authenticated and current_user.id == 1 %}
+        <small style="color: #8B0000;">
+            👑 Administrator access
+        </small>
+        {% elif current_user.is_authenticated and current_user.id == job.team_leader %}
+        <small style="color: #8B0000;">
+            🎯 Team leader access
+        </small>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info text-center" role="alert" style="background-color: #FFE4E1; color: #8B0000; border-color: #8B0000;">
+    🚫 No jobs found. Start a new mission!
+</div>
+{% endfor %}
+
+<!-- Кнопка добавления новой работы (только для админа) -->
+{% if current_user.is_authenticated and current_user.id == 1 %}
+<div class="text-center mt-4">
+    <a href="/add_job" class="btn" style="background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%); color: white; padding: 12px 30px; border-radius: 50px; font-weight: bold;">
+        ➕ ADD NEW JOB
+    </a>
+</div>
+{% endif %}
+
+<style>
+    /* Дополнительные стили для кнопок */
+    .btn-warning:hover {
+        background-color: #FFA500 !important;
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-danger:hover {
+        background-color: #B22222 !important;
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+    
+    .card-header {
+        transition: all 0.3s ease;
+    }
+    
+    .card-header:hover {
+        background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%) !important;
+    }
+</style>
+{% endblock %}
