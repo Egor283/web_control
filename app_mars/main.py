@@ -8,6 +8,7 @@ from data.log import Login_form
 from data.add_job import AddJobForm
 from flask_restful import Api, abort, Resource, reqparse
 import users_resource
+import jobs_resource
 
 
 
@@ -22,9 +23,11 @@ def main():
     db_session.global_init("db/mars.db")
     app.register_blueprint(jobs_api.blueprint)
     # для списка объектов
-    api.add_resource(users_resource.UsersListResource, '/api/v2/users')
+    api.add_resource(users_resource.UsersListResource, '/api/users')
     # для одного объекта
-    api.add_resource(users_resource.UsersResource, '/api/v2/users/<user_id>')
+    api.add_resource(users_resource.UsersResource, '/api/users/<user_id>')
+    api.add_resource(jobs_resource.JobsListResource, '/api/jobs')
+    api.add_resource(jobs_resource.JobsResource, '/api/jobs/<job_id>')
     app.run(host='127.0.0.1', port=5000, debug=True)
 
 

@@ -2,21 +2,17 @@ from data import db_session
 from data.jobs import Jobs
 from flask import json, jsonify
 from flask_restful import abort, Resource
-from werkzeug.security import generate_password_hash
 from reqparse_job import parser
 
 
-def abort_if_user_not_found(user_id):
+def abort_if_user_not_found(job_id):
     session = db_session.create_session()
-    news = session.query(Jobs).get(user_id)
-    if not news:
-        abort(404, message=f"News {user_id} not found")
-
-def set_password(password):
-    return generate_password_hash(password)
+    job = session.query(Jobs).get(job_id)
+    if not job:
+        abort(404, message=f"Jobs {job_id} not found")
 
 
-class JobssResource(Resource):
+class JobsResource(Resource):
     def get(self, job_id):
         abort_if_user_not_found(job_id)
         session = db_session.create_session()
